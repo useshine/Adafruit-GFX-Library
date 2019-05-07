@@ -28,7 +28,7 @@ class Adafruit_GFX : public Print {
   virtual void writeFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color);
   virtual void writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color);
   virtual void endWrite(void);
-
+  
   // CONTROL API
   // These MAY be overridden by the subclass to provide device-specific
   // optimized code.  Otherwise 'generic' versions are used.
@@ -40,6 +40,7 @@ class Adafruit_GFX : public Print {
   // optimized code.  Otherwise 'generic' versions are used.
   virtual void
     // It's good to implement those, even if using transaction API
+	drawsector(int16_t x0, int16_t y0, int16_t r,uint16_t color1,uint16_t color2,uint16_t color3);
     drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color),
     drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color),
     fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color),
@@ -105,7 +106,8 @@ class Adafruit_GFX : public Print {
     getTextBounds(char *string, int16_t x, int16_t y,
       int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h),
     getTextBounds(const __FlashStringHelper *s, int16_t x, int16_t y,
-      int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h);
+      int16_t *x1, int16_t *y1, uint16_t *w, uint16_t *h),
+	drawcircles(int16_t x0,int16_t y0,int16_t r0,int16_t sr,uint16_t color);
 
 #if ARDUINO >= 100
   virtual size_t write(uint8_t);

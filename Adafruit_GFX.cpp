@@ -127,6 +127,7 @@ void Adafruit_GFX::writeLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1,
     }
 }
 
+
 void Adafruit_GFX::startWrite(){
     // Overwrite in subclasses if desired!
 }
@@ -146,6 +147,43 @@ void Adafruit_GFX::writeFastVLine(int16_t x, int16_t y,
     drawFastVLine(x, y, h, color);
 }
 
+void Adafruit_GFX::drawcircles(int16_t x0,int16_t y0,
+		int16_t r,int16_t sr,uint16_t color){
+	int16_t f = 1 - r;
+    int16_t ddF_x = 1;
+    int16_t ddF_y = -2 * r;
+    int16_t x = 0;
+    int16_t y = r;
+
+    startWrite();
+    writePixel(x0  , y0+r, color);
+    writePixel(x0  , y0-r, color);
+    writePixel(x0+r, y0  , color);
+    writePixel(x0-r, y0  , color);
+
+    while (x<y) {
+        if (f >= 0) {
+            y--;
+            ddF_y += 2;
+            f += ddF_y;
+        }
+        x++;
+        ddF_x += 2;
+        f += ddF_x;
+
+        writePixel(x0 + x, y0 + y, color);
+        writePixel(x0 - x, y0 + y, color);
+        writePixel(x0 + x, y0 - y, color);
+        writePixel(x0 - x, y0 - y, color);
+        writePixel(x0 + y, y0 + x, color);
+        writePixel(x0 - y, y0 + x, color);
+        writePixel(x0 + y, y0 - x, color);
+        writePixel(x0 - y, y0 - x, color);
+    }
+    endWrite();
+	
+}
+
 // (x,y) is leftmost point; if unsure, calling function
 // should sort endpoints or call writeLine() instead
 void Adafruit_GFX::writeFastHLine(int16_t x, int16_t y,
@@ -161,6 +199,8 @@ void Adafruit_GFX::writeFillRect(int16_t x, int16_t y, int16_t w, int16_t h,
     // Overwrite in subclasses if desired!
     fillRect(x,y,w,h,color);
 }
+
+
 
 void Adafruit_GFX::endWrite(){
     // Overwrite in subclasses if startWrite is defined!
@@ -252,6 +292,22 @@ void Adafruit_GFX::drawCircle(int16_t x0, int16_t y0, int16_t r,
         writePixel(x0 - y, y0 - x, color);
     }
     endWrite();
+}
+
+void Adafruit_GFX::drawsector(int16_t x0, int16_t y0, int16_t r,
+        uint16_t color1,uint16_t color2,uint16_t color3){
+	int16_t h1=1/2*r;
+	int16_t h2=r/(2* sqrt(3));
+	int16_t x1=x0-h1;
+	int16_t y1=y0+h2;
+	int16_t x2=x0+h1;
+	int16_t y2=y0+h2;
+	int16_t x3=x0;
+	int16_t y3=y0-h2;
+	drawCircle(x1,y1,r,color1);
+	drawCircle(x2,y2,r,color2);
+	drawCircle(x3,y3,r,color3);
+	
 }
 
 void Adafruit_GFX::drawCircleHelper( int16_t x0, int16_t y0,
@@ -520,6 +576,8 @@ void Adafruit_GFX::drawBitmap(int16_t x, int16_t y,
     }
     endWrite();
 }
+
+
 
 // Draw a PROGMEM-resident 1-bit image at the specified (x,y) position,
 // using the specified foreground (for set bits) and background (unset
