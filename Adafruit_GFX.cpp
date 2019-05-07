@@ -306,7 +306,8 @@ void Adafruit_GFX::drawsector(int16_t x0, int16_t y0, int16_t r,
 	int16_t y3=y0-h2;
 	drawCircle(x1,y1,r,color1);
 	drawCircle(x2,y2,r,color2);
-	drawCircle(x3,y3,r,color3);
+	drawCircle(x3,y3,r,color3); 
+	
 	
 }
 
